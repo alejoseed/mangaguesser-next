@@ -1,10 +1,8 @@
 import HamNavBar from "./hamNav";
 import React from 'react'
-import logo from "../components/logo.svg";
+import logo from "./logo.svg";
 import Link from "next/link";
 import Image from "next/image"
-// Every Item should technically be the same. Maybe I should set an interface so that
-// I don't have to repeat code. Try passing the names as props
 
 function NavBarItems() {
   return (

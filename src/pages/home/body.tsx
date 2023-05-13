@@ -3,10 +3,10 @@
 import Link from 'next/link';
 import Image from 'next/image'
 import React, { useEffect } from 'react'
+import NavBar from '../components/navBar';
 
 function Body() {
     return(
-
         <div className='grid justify-items-center roll-out mb-3'>
             <h2 key={Math.random()} className="homeText roll-out">TEST YOUR MANGA SKILLS LIKE NEVER BEFORE</h2>
             <Image src="/narutosasuke.webp" alt="mangaguesser"
