@@ -1,6 +1,7 @@
 import React from "react";
-import NavBar from "./components/navBar";
 import Image from "next/image"
+
+// @ts-ignore
 export default function Custom404() {
     return (
         <div>

@@ -2,8 +2,7 @@
 // I'll have to make more componets, format them and just render them there
 import Link from 'next/link';
 import Image from 'next/image'
-import React, { useEffect } from 'react'
-import NavBar from '../components/navBar';
+import React from 'react'
 
 function Body() {
     return(

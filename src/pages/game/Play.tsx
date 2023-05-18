@@ -43,15 +43,6 @@ interface MangaResponse {
   imageUrl : string,
 }
 
-let ImageParams = {
-  correctNum: 0,
-  mangaId : "",
-  mangaName : "",
-  atHome : "https://api.mangadex.org/at-home/server/",
-  imageUrl : "",
-  chapterId : "",
-}
-
 // This variable controls the pop up timeout. Since I want 
 let popOpTime : any = null;
 
@@ -64,6 +55,7 @@ export default function Play(){
   const [popUp, setPopUp] = useState(false);
   const [correctNum, setCorrectNum] = useState(0);
   const [mangaImageUrl, setMangaImageUrl] = useState("");
+  
   const [manga, setManga] = useState({
     mangaOne: "",
     mangaTwo: "",
@@ -71,17 +63,14 @@ export default function Play(){
     mangaFour: "",
   });
   
-  const handleManga = useCallback(
-    async (res: MangaResponse) => {
-      setManga({
-        mangaOne: res.mangaNames[0] || "",
-        mangaTwo: res.mangaNames[1] || "",
-        mangaThree: res.mangaNames[2] || "",
-        mangaFour: res.mangaNames[3] || "",
-      });
-    },
-    [setManga]
-  );
+  function handleManga(res: MangaResponse) {
+    setManga({
+      mangaOne: res.mangaNames[0] || "",
+      mangaTwo: res.mangaNames[1] || "",
+      mangaThree: res.mangaNames[2] || "",
+      mangaFour: res.mangaNames[3] || "",
+    });
+  }
 
   const handleImage = useCallback(
     (res: string) => {
@@ -91,34 +80,28 @@ export default function Play(){
     },
     [setMangaImageUrl]
   );
-
-  const handleCorrectNum = useCallback(
-    async (res: number) => {
-      setCorrectNum(res);
-    },
-    [setCorrectNum]
-  );
-
-  const fetchData = async () => {
-    const mangaArrayRes = await fetch('https://mangaguesser.up.railway.app/random_manga')
-    .then((mangaArrayRes) => {
-      return mangaArrayRes.json();
-    })
-    
-    handleManga(mangaArrayRes);
-    handleCorrectNum(mangaArrayRes.correctNum);
-
-    fetch('https://mangaguesser.up.railway.app/image/' + mangaArrayRes.mangaId)
-    .then(response => response.blob())
-    .then(blob => {
-      const url = URL.createObjectURL(blob);
-      handleImage(url);
-    }).catch(error => console.error(error));
-  };
-
+  
   useEffect(() => {
-    fetchData();
-  }, [handleManga, handleManga, setCorrectNum]);
+    const fetchData = async () => {
+      const mangaArrayRes : MangaResponse = await fetch('https://mangaguesser.up.railway.app/random_manga')
+      .then((mangaArrayRes) => {
+        return mangaArrayRes.json();
+      })
+      
+      handleManga(mangaArrayRes);
+      setCorrectNum(mangaArrayRes.correctNum);
+  
+      fetch('https://mangaguesser.up.railway.app/image/' + mangaArrayRes.mangaId)
+      .then(response => response.blob())
+      .then(blob => {
+        const url = URL.createObjectURL(blob);
+        handleImage(url);
+      }).catch(error => console.error(error));
+    };
+
+    fetchData().catch(error => console.error(error));
+
+  }, [handleManga, setCorrectNum]);
 
   function HandleAnswer(userAnswer : number) {
     if (userAnswer === correctNum) {
@@ -131,7 +114,6 @@ export default function Play(){
       popOpTime = setTimeout(() => {
         setPopUp(false);
         setIsLoading(true);
-        fetchData();
       }, 1000);
     }
     else if (userAnswer !== correctNum){
