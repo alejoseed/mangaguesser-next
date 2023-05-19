@@ -6,6 +6,7 @@ import {
 import React from "react";
 import Image from "next/image"
 import Head from "next/head"
+import { boolean } from "zod";
 
 export interface Root {
   result: string
@@ -42,10 +43,17 @@ interface MangaResponse {
   correctNum: number,
   mangaId : string,
 }
+interface Answer {
+  answer: boolean;
+}
+let popOpTime : any = null;
 
 export default function Dev(){
 
   const [isLoading, setIsLoading] = useState(true);
+  const [score, setScore] = useState(0);
+  const [hp, setHp] = useState(100);
+  const [streak, setStreak] = useState(0);
   const [popUp, setPopUp] = useState(false);
   const [manga, setManga] = useState({
     mangaOne: "",
@@ -78,7 +86,6 @@ export default function Dev(){
   const getImage = useCallback(async (imgurl : string) : Promise<string> => {
     try {
       const response = await fetch(imgurl);
-
       const blob = await response.blob();
       
       const url : string = URL.createObjectURL(blob) || "";
@@ -89,8 +96,9 @@ export default function Dev(){
     }
   }, []);
 
-  useEffect(() => {
-    const url = "http://127.0.0.1:4000/random_manga";
+  function fetchMangas() {
+    useEffect(() => { const url = "http://127.0.0.1:4000/random_manga";
+    clearTimeout(popOpTime);
 
     getManga(url)
       .then((res: MangaResponse | undefined) => {
@@ -98,21 +106,19 @@ export default function Dev(){
           setManga({
             mangaOne: res.mangaNames[0] || "",
             mangaTwo: res.mangaNames[1] || "",
-            mangaThree: "",
-            mangaFour: "",
+            mangaThree: res.mangaNames[2] || "",
+            mangaFour: res.mangaNames[3] || "",
           });
         } else {
-          // Handle the case when res is null (e.g., show an error message)
+          console.log("There was an error fetching the random manga");
         }
-        setIsLoading(false);
+
       })
       .catch((error) => {
         console.log(error);
-        // Handle the error case (e.g., show an error message)
-        setIsLoading(false);
+        alert("There was an issue. Reload the page");
       });
-  }, [getManga]);
-
+  }, [fetchMangas]);}
 
   useEffect(() => {
     const imageUrl = `http://127.0.0.1:4000/image?${Date.now()}`;
@@ -128,6 +134,41 @@ export default function Dev(){
     );
 
   }, [getImage]);
+
+  async function handleAnswer(answer : number) {
+    await fetch(`http://127.0.0.1:4000/answer?number=${answer}`, {
+      method: 'POST',
+      body: JSON.stringify({ answer })
+      }).then(response => response.json() as Promise<boolean>)
+      .then(response => {
+        if (response === true) {
+          setScore(score + 1);
+          setPopUp(true);
+          if (score >= streak)
+            setStreak(score);
+          hp + 10 > 100 ? setHp(100) : setHp(hp + 10);
+          
+          popOpTime = setTimeout(() => {
+            setPopUp(false);
+            setIsLoading(true);
+          }, 1000);
+        }
+        else {
+          if(score > 0) {
+            setScore(score - 1);
+            hp - 10 < 0 ? setHp(0) : setHp(hp - 10);  
+          }
+
+          if (hp <= 0) {
+            setScore(0);
+            setStreak(0);      
+            setHp(100);
+          }
+        }
+        }).catch(error => {
+          console.log("There was an error getting the answer", error);
+      })
+  }
 
   if (isLoading) {
     return <div>
@@ -182,18 +223,18 @@ export default function Dev(){
         <footer>
           <div className="grid gap-x-4 grid-cols-2 items-center pt-3">
           <div className="grid grid-cols-1 gap-y-2">
-              <button className="buttonManga w-full" style={{ backgroundColor: "#89CFF0", 
+              <button className="buttonManga w-full" onClick={() => handleAnswer(0)} style={{ backgroundColor: "#89CFF0", 
               fontSize: manga.mangaOne.length > 41 ? '12px' : 'inherit' }}>
               {manga.mangaOne}</button>
-              <button className="buttonManga w-full" style={{ backgroundColor: "#E3735E",
+              <button className="buttonManga w-full" onClick={() => handleAnswer(1)} style={{ backgroundColor: "#E3735E",
               fontSize: manga.mangaTwo.length > 41 ? '12px' : 'inherit'
               }}>{manga.mangaTwo}</button>
             </div>
             <div className="grid grid-cols-1 gap-y-2">
-              <button className="buttonManga w-full" style={{ backgroundColor: "#36454F",
+              <button className="buttonManga w-full" onClick={() => handleAnswer(2)} style={{ backgroundColor: "#36454F",
               fontSize: manga.mangaThree.length > 41 ? '12px' : 'inherit'
               }}>{manga.mangaThree}</button>
-              <button className="buttonManga w-full" style={{ backgroundColor: "#009e60",
+              <button className="buttonManga w-full" onClick={() => handleAnswer(3)} style={{ backgroundColor: "#009e60",
               fontSize: manga.mangaFour.length > 41 ? '12px' : 'inherit'
               }}>{manga.mangaFour}</button>
             </div>
