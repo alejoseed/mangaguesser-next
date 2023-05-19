@@ -6,7 +6,7 @@ import {
 import React from "react";
 import Image from "next/image"
 import Head from "next/head"
-import { boolean } from "zod";
+
 export interface Root {
   result: string
   response: string
@@ -75,7 +75,7 @@ export default function Dev(){
   }, []);
 
 
-  const getImage = useCallback(async (imgurl : string) : Promise<any> => {
+  const getImage = useCallback(async (imgurl : string) : Promise<string> => {
     try {
       const response = await fetch(imgurl);
 
@@ -107,6 +107,7 @@ export default function Dev(){
         setIsLoading(false);
       })
       .catch((error) => {
+        console.log(error);
         // Handle the error case (e.g., show an error message)
         setIsLoading(false);
       });
