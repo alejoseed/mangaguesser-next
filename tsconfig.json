@@ -17,6 +17,7 @@
     "incremental": true,
     "noUncheckedIndexedAccess": true,
     "baseUrl": ".",
+    
     "paths": {
       "~/*": ["./src/*"]
     }
@@ -27,7 +28,10 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.cjs",
-    "**/*.mjs"
-, "src/pages/api/mangaguesser/manga.js"  ],
+    "**/*.mjs", 
+    "src/pages/api/mangaguesser/manga.js",
+    "src/404.js",
+    "custom.d.ts"
+    ],
   "exclude": ["node_modules"]
 }

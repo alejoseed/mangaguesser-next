@@ -52,7 +52,7 @@ function NavBar() {
         <div className="flex items-center">
           <a href={"/"} className="flex items-center">
             <Image
-              src={logo}
+              src={logo as string}
               alt="logo"
               className="text-yellow-300 wmr-3 h-9 sm:h-9"
             />
