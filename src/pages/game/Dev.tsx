@@ -6,7 +6,6 @@ import {
 import React from "react";
 import Image from "next/image"
 import Head from "next/head"
-import { boolean } from "zod";
 
 export interface Root {
   result: string
@@ -46,6 +45,7 @@ interface MangaResponse {
 interface Answer {
   answer: boolean;
 }
+
 let popOpTime : any = null;
 
 export default function Dev(){
@@ -63,77 +63,50 @@ export default function Dev(){
   });
   const [mangaImageUrl, setMangaImageUrl] = useState("");
 
-  const getManga = useCallback(async (url: string): Promise<MangaResponse | undefined> => {
-    let tmpManga : MangaResponse = {} as MangaResponse;
-
+  const getManga = async () => {
     try {
-      const response = await fetch(url);
+      const response = await fetch("http://localhost:4000/random_manga");
       
-      if (!response.ok) throw new Error("Network response was not ok");
+      if (!response.ok) throw new Error("Can't get manga...");
       
       const data: MangaResponse = await response.json() as MangaResponse;
-
-      tmpManga = data;
-      return tmpManga;
-
-    } catch (error) {
-      console.error("There was an error accessing the URL, please verify");
-      throw error;
-    }
-  }, []);
-
-
-  const getImage = useCallback(async (imgurl : string) : Promise<string> => {
-    try {
-      const response = await fetch(imgurl);
-      const blob = await response.blob();
       
-      const url : string = URL.createObjectURL(blob) || "";
-      return url
+      setManga({
+        mangaOne: data.mangaNames[0] || "",
+        mangaTwo: data.mangaNames[1] || "",
+        mangaThree: data.mangaNames[2] || "",
+        mangaFour: data.mangaNames[3] || "",
+      });
+
     } catch (error) {
       console.error("There was an error accessing the URL, please verify");
       throw error;
     }
-  }, []);
+  };
 
-  function fetchMangas() {
-    useEffect(() => { const url = "http://127.0.0.1:4000/random_manga";
-    clearTimeout(popOpTime);
+  const getImage = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:4000/image?${Date.now()}`);
 
-    getManga(url)
-      .then((res: MangaResponse | undefined) => {
-        if (res) {
-          setManga({
-            mangaOne: res.mangaNames[0] || "",
-            mangaTwo: res.mangaNames[1] || "",
-            mangaThree: res.mangaNames[2] || "",
-            mangaFour: res.mangaNames[3] || "",
-          });
-        } else {
-          console.log("There was an error fetching the random manga");
-        }
+      if (!response.ok) throw new Error("Can't get image...");
+      
+      const data: Blob = await response.blob() as Blob;
 
-      })
-      .catch((error) => {
-        console.log(error);
-        alert("There was an issue. Reload the page");
-      });
-  }, [fetchMangas]);}
+      let image: string = URL.createObjectURL(data)
 
+      setMangaImageUrl(image);
+      setIsLoading(false);
+    } catch (error) {
+      console.error("There was an error accessing the URL, please verify");
+      throw error;
+    }
+  };
+
+  
   useEffect(() => {
-    const imageUrl = `http://127.0.0.1:4000/image?${Date.now()}`;
-
-    getImage(imageUrl)
-    .then(
-      (res : string) => {
-        setMangaImageUrl(res);
-        setIsLoading(false);
-      }
-    ).catch (
-      error => console.error("error assigning the image", error)
-    );
-
-  }, [getImage]);
+    getManga(); 
+    getImage();
+  }, [isLoading]);
 
   async function handleAnswer(answer : number) {
     await fetch(`http://127.0.0.1:4000/answer?number=${answer}`, {
