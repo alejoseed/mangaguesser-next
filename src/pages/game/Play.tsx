@@ -1,7 +1,6 @@
 import {
   useState,
   useEffect,
-  useCallback,
 } from "react";
 import React from "react";
 import Image from "next/image"
@@ -13,7 +12,42 @@ interface MangaResponse {
   mangaId : string,
 }
 
-let popOpTime : any = null;
+async function getManga() {
+  try {
+    const response = await fetch("http://localhost:4000/random_manga");
+    
+    if (!response.ok) throw new Error("Can't get manga...");
+    
+    const data: MangaResponse = await response.json() as MangaResponse;
+    
+    return data;
+
+  } catch (error) {
+    console.error("There was an error accessing the URL, please verify");
+    throw error;
+  }
+}
+
+
+async function getImage() {
+  try {
+    const response = await fetch(`http://localhost:4000/image?${Date.now()}`);
+
+    if (!response.ok) throw new Error("Can't get image...");
+    
+    const data: Blob = await response.blob();
+
+    const image: string = URL.createObjectURL(data)
+
+    //setMangaImageUrl(image);
+    //setIsLoading(false);
+    return image;
+
+  } catch (error) {
+    console.error("There was an error accessing the URL, please verify");
+    throw error;
+  }
+}
 
 export default function Dev(){
 
@@ -31,86 +65,60 @@ export default function Dev(){
 
   const [mangaImageUrl, setMangaImageUrl] = useState("");
 
-  const getManga = async () => {
-    try {
-      const response = await fetch("http://localhost:4000/random_manga");
-      
-      if (!response.ok) throw new Error("Can't get manga...");
-      
-      const data: MangaResponse = await response.json() as MangaResponse;
-      
-      setManga({
-        mangaOne: data.mangaNames[0] || "",
-        mangaTwo: data.mangaNames[1] || "",
-        mangaThree: data.mangaNames[2] || "",
-        mangaFour: data.mangaNames[3] || "",
-      });
 
-    } catch (error) {
-      console.error("There was an error accessing the URL, please verify");
-      throw error;
-    }
-  };
-
-  const getImage = async () => {
-    try {
-      const response = await fetch(`http://localhost:4000/image?${Date.now()}`);
-
-      if (!response.ok) throw new Error("Can't get image...");
-      
-      const data: Blob = await response.blob() as Blob;
-
-      let image: string = URL.createObjectURL(data)
-
-      setMangaImageUrl(image);
-      setIsLoading(false);
-    } catch (error) {
-      console.error("There was an error accessing the URL, please verify");
-      throw error;
-    }
-  };
-
-  
   useEffect(() => {
-    getManga(); 
-    getImage();
+    getManga().then((response) => 
+      setManga({
+        mangaOne: response.mangaNames[0] || "",
+        mangaTwo: response.mangaNames[1] || "",
+        mangaThree: response.mangaNames[2] || "",
+        mangaFour: response.mangaNames[3] || "",
+      }))
+      .catch(console.error);
+
+    getImage().then((response) => 
+      setMangaImageUrl(response)
+    ).catch(console.error).finally(() => setIsLoading(false));
+
   }, [isLoading]);
 
-  async function handleAnswer(answer : number) {
-    await fetch(`http://127.0.0.1:4000/answer?number=${answer}`, {
+  function handleAnswer(answer: number) {
+    fetch(`http://127.0.0.1:4000/answer?number=${answer}`, {
       method: 'POST',
-      body: JSON.stringify({ answer })
-      }).then(response => response.json() as Promise<boolean>)
-      .then(response => {
-        if (response === true) {
-          setScore(score + 1);
+      body: JSON.stringify({ answer }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data === true) {
+          setScore((prevScore) => prevScore + 1);
           setPopUp(true);
-          
-          if (score >= streak)
+          if (score >= streak) {
             setStreak(score);
-          hp + 10 > 100 ? setHp(100) : setHp(hp + 10);
-          
-          popOpTime = setTimeout(() => {
+          }
+          hp + 10 > 100 ? setHp(100) : setHp((prevHp) => prevHp + 10);
+  
+          setTimeout(() => {
             setPopUp(false);
             setIsLoading(true);
           }, 1000);
-        }
-        else {
-          if(score > 0) {
-            setScore(score - 1);
-            hp - 10 < 0 ? setHp(0) : setHp(hp - 10);  
+        } else {
+          if (score > 0) {
+            setScore((prevScore) => prevScore - 1);
+            hp - 10 < 0 ? setHp(0) : setHp((prevHp) => prevHp - 10);
           }
-
+  
           if (hp <= 0) {
             setScore(0);
             setStreak(0);
             setHp(100);
           }
         }
-        }).catch(error => {
-          console.log("There was an error getting the answer", error);
       })
+      .catch((error) => {
+        console.log("There was an error getting the answer", error);
+      });
   }
+  
 
   if (isLoading) {
     return <div>
@@ -124,6 +132,8 @@ export default function Dev(){
   }
 
   return ( 
+    
+
     <div className="font-link">
 
     <Head>

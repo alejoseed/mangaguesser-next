@@ -1,8 +1,5 @@
-import Head from "next/head"
 import Image from "next/image"
 import construction from "public/underconstruction.jpg"
-import Link from "next/link"
-import { Electrolize } from "next/font/google"
 
 export default function Login(){
     return(
