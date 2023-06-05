@@ -65,22 +65,33 @@ export default function Dev(){
 
   const [mangaImageUrl, setMangaImageUrl] = useState("");
 
+  const prepareGame = async () => {
+    setIsLoading(true);
+
+    try {
+      const mangaResponse = await getManga();
+      const imageResponse = await getImage();
+
+      setManga({
+        mangaOne: mangaResponse.mangaNames[0] || "",
+        mangaTwo: mangaResponse.mangaNames[1] || "",
+        mangaThree: mangaResponse.mangaNames[2] || "",
+        mangaFour: mangaResponse.mangaNames[3] || "",
+      });
+
+      setMangaImageUrl(imageResponse);
+
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
 
   useEffect(() => {
-    getManga().then((response) => 
-      setManga({
-        mangaOne: response.mangaNames[0] || "",
-        mangaTwo: response.mangaNames[1] || "",
-        mangaThree: response.mangaNames[2] || "",
-        mangaFour: response.mangaNames[3] || "",
-      }))
-      .catch(console.error);
-
-    getImage().then((response) => 
-      setMangaImageUrl(response)
-    ).catch(console.error).finally(() => setIsLoading(false));
-
-  }, [isLoading]);
+    void prepareGame()
+  }, []);
 
   function handleAnswer(answer: number) {
     fetch(`http://127.0.0.1:4000/answer?number=${answer}`, {
@@ -99,7 +110,7 @@ export default function Dev(){
   
           setTimeout(() => {
             setPopUp(false);
-            setIsLoading(true);
+            void prepareGame()
           }, 1000);
         } else {
           if (score > 0) {
@@ -162,7 +173,7 @@ export default function Dev(){
             </>
           )}
 
-          <Image src={mangaImageUrl} alt="NO MANGA FOUND" className="rounded-xl shadow-xl max-w-[330px] md:max-w-[360px]" width={500} height={500}/>
+          <img src={mangaImageUrl} alt="NO MANGA FOUND" className="rounded-xl shadow-xl max-w-[330px] md:max-w-[360px]" width={500} height={500}/>
           
           <div className="mt-4 rounded-xl shadow-xl backdrop-blur bg-sky-300 font-link">
             <p>Current streak:   {streak}</p>
