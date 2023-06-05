@@ -26,7 +26,7 @@ function NavBarItems() {
         </li>
         <li>
           <Link
-            href="/login"
+            href="/login/login"
             className="mx-4 hover:text-neutral-200 duration-[30ms]"
           >
             Login
@@ -34,7 +34,7 @@ function NavBarItems() {
         </li>
         <li>
           <Link
-            href="/contact"
+            href="/contact/contactme"
             className="mx-4 hover:text-neutral-200 duration-[30ms]"
           >
             Contact

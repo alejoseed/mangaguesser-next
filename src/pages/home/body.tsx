@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image'
 import React from 'react'
 
-function Body() {
+export default function Body() {
     return(
         <div className='grid justify-items-center roll-out mb-3'>
             <h2 key={Math.random()} className="homeText roll-out">TEST YOUR MANGA SKILLS LIKE NEVER BEFORE</h2>
@@ -20,5 +20,3 @@ function Body() {
         </div>
     );
 }
-
-export default Body;
