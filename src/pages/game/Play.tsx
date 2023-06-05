@@ -85,6 +85,7 @@ export default function Dev(){
         if (response === true) {
           setScore(score + 1);
           setPopUp(true);
+          
           if (score >= streak)
             setStreak(score);
           hp + 10 > 100 ? setHp(100) : setHp(hp + 10);
@@ -123,8 +124,6 @@ export default function Dev(){
   }
 
   return ( 
-    
-
     <div className="font-link">
 
     <Head>
