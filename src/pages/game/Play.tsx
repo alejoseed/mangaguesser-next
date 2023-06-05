@@ -181,7 +181,8 @@ export default function Dev(){
             <p>Current HP:       {hp}    </p>
           </div>
         </div>
-        <footer>
+
+        <footer className="fixed left-0 bottom-0 w-full text-center">
           <div className="grid gap-x-4 grid-cols-2 items-center pt-3">
             <div className="grid grid-cols-1 gap-y-2">
                 <button className="buttonManga w-full" onClick={() => handleAnswer(0)} style={{ backgroundColor: "#89CFF0", 
@@ -201,6 +202,7 @@ export default function Dev(){
             </div>
           </div>
         </footer>
+      
       </div>
     </div>
   );
