@@ -14,7 +14,7 @@ interface MangaResponse {
 
 async function getManga() {
   try {
-    const response = await fetch("http://localhost:4000/random_manga");
+    const response = await fetch("https://mangaguesser.up.railway.app/random_manga");
     
     if (!response.ok) throw new Error("Can't get manga...");
     
@@ -31,7 +31,7 @@ async function getManga() {
 
 async function getImage() {
   try {
-    const response = await fetch(`http://localhost:4000/image?${Date.now()}`);
+    const response = await fetch(`https://mangaguesser.up.railway.app/image?${Date.now()}`);
 
     if (!response.ok) throw new Error("Can't get image...");
     
@@ -94,7 +94,7 @@ export default function Dev(){
   }, []);
 
   function handleAnswer(answer: number) {
-    fetch(`http://127.0.0.1:4000/answer?number=${answer}`, {
+    fetch(`https://mangaguesser.up.railway.app/answer?number=${answer}`, {
       method: 'POST',
       body: JSON.stringify({ answer }),
     })
