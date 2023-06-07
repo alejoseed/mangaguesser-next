@@ -40,3 +40,7 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+exampleimages/not1to1.jpg
+exampleimages/not1to1eg2.jpg
+exampleimages/regularsize.jpg
+exampleimages/regularsize1.jpg
