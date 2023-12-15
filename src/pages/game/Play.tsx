@@ -143,19 +143,19 @@ export default function Dev(){
   }
 
   return ( 
-    <div className="flex flex-col h-full w-full lg:justify-center">
+    <div className="grid grid-flow-row grid-rows-[auto_1fr_auto] h-full w-full justify-center">
 
-        {popUp && (
-        <div className="font-link flex h-full w-full z-50 absolute opacity-80 bg-black justify-items-center">
-          <dialog open={true}
-            className="self-center text-center bg-cyan-400 rounded-lg w-[300px] h-[200px] flex justify-center items-center"
-          >
-            <div className="text-2xl ">
-              <p>You are correct! +10HP!</p>
-            </div>
-          </dialog>
-        </div>
-        )}
+      {popUp && (
+      <div className="font-link flex h-full w-full z-50 absolute opacity-80 bg-black justify-items-center">
+        <dialog open={true}
+          className="self-center text-center bg-cyan-400 rounded-lg w-[300px] h-[200px] flex justify-center items-center"
+        >
+          <div className="text-2xl ">
+            <p>You are correct! +10HP!</p>
+          </div>
+        </dialog>
+      </div>
+      )}
 
 
       <Head>
@@ -170,18 +170,27 @@ export default function Dev(){
         <meta property="og:url" content="https://mangaguesser.vercel.app" />
         <meta property="og:type" content="website" />
       </Head>
-
-      <div className="md:w-[660px] w-[360px] flex self-center mt-10">
-        <img className="w-full md:h-[660px] h-[360px] object-contain self-center text-center" src={mangaImageUrl} alt="No Manga Found" />
+        {/* md:w-[660px] w-[360px] flex mt-10 items-center */}
+      <div className="text-center">
+        {/* w-full md:h-[660px] h-[360px] object-contain text-center */}
+        <img className="md:h-[40vw] md:w-[40vw] lg:h-[30vw] lg:w-[30vw] sm:h-[40vw] sm:w-[40vw] h-[90vw] w-[90vw] object-contain " src={mangaImageUrl} alt="No Manga Found" />
       </div>
 
-      <div className="max-w-[130px] mt-4 rounded-xl shadow-xl backdrop-blur self-center bg-sky-300 font-link text-center justify-center">
-        <p>Current streak:   {streak}</p>
-        <p>Current score:    {score} </p>
-        <p>Current HP:       {hp}    </p>
+      <div className="justify-self-center 
+                      m-4 
+                      rounded-xl 
+                      shadow-xl
+                      backdrop-blur 
+                      bg-sky-300
+                      text-center 
+                      justify-center">
+        <div className="font-sans text-lg">Current streak:   {streak}</div>
+        <div className="font-sans text-lg">Current score:    {score} </div>
+        <div className="font-sans text-lg">Current HP:       {hp}    </div>
       </div>
+      
 
-      <footer className="grid grid-cols-2 gap-x-2 p-3 w-full fixed bottom-0">
+      <footer className="absolute grid grid-cols-2 gap-x-2 p-3 w-full inset-x-0 bottom-0">
           <div className="grid grid-cols-1 gap-y-2">
                 <button className="buttonManga w-full" onClick={() => handleAnswer(0)} style={{ backgroundColor: "#89CFF0", 
                 fontSize: manga.mangaOne.length > 41 ? '12px' : 'inherit' }}>

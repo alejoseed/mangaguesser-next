@@ -7,11 +7,11 @@
         @apply hover:text-neutral-200 duration-75;
     }
 
-    html, body, body > div:first-child, #__next, #__next > div:first-child  {
+    /* html, body, body > div:first-child, #__next, #__next > div:first-child  {
       height: 100%;
       margin: 0;
       overflow-y: hidden;
-      }
+      } */
 
     .font-link {
       font-family: 'Montserrat Alternates', Regular;
