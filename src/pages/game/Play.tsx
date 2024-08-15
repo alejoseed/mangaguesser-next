@@ -14,7 +14,7 @@ interface MangaResponse {
 
 async function getManga() {
   try {
-    const response = await fetch("https://mangaguesser.up.railway.app/random_manga");
+    const response = await fetch("https://www.alejoseed.com/mangaguesser/random_manga");
     
     if (!response.ok) throw new Error("Can't get manga...");
     
@@ -31,7 +31,7 @@ async function getManga() {
 
 async function getImage() {
   try {
-    const response = await fetch(`https://mangaguesser.up.railway.app/image?${Date.now()}`);
+    const response = await fetch(`https://www.alejoseed.com/mangaguesser/image?${Date.now()}`);
 
     if (!response.ok) throw new Error("Can't get image...");
     
@@ -94,7 +94,7 @@ export default function Dev(){
   }, []);
 
   function handleAnswer(answer: number) {
-    fetch(`https://mangaguesser.up.railway.app/answer?number=${answer}`, {
+    fetch(`https://www.alejoseed.com/mangaguesser/answer?number=${answer}`, {
       method: 'POST',
       body: JSON.stringify({ answer }),
     })
