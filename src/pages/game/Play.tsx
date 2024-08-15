@@ -70,7 +70,6 @@ export default function Dev(){
 
     try {
       const mangaResponse = await getManga();
-      const imageResponse = await getImage();
 
       setManga({
         mangaOne: mangaResponse.mangaNames[0] || "",
@@ -78,11 +77,12 @@ export default function Dev(){
         mangaThree: mangaResponse.mangaNames[2] || "",
         mangaFour: mangaResponse.mangaNames[3] || "",
       });
-
+      
+      const imageResponse = await getImage();
       setMangaImageUrl(imageResponse);
 
     } catch (error) {
-      console.error(error);
+      console.error(`${error} in the prepareGame function`);
     } finally {
       setIsLoading(false);
     }
