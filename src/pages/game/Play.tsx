@@ -3,19 +3,17 @@ import {
   useEffect,
 } from "react";
 import React from "react";
-import Image from "next/image"
 import Head from "next/head"
 
 interface MangaResponse {
-  mangaNames: string[];
-  correctNum: number,
-  mangaId : string,
+  mangas: string[];
+  CurrentStoredMangaId: string,
 }
 
 async function getManga() {
   try {
     const response = await fetch("https://www.alejoseed.com/mangaguesser/random_manga");
-    
+    console.log(response)
     if (!response.ok) throw new Error("Can't get manga...");
     
     const data: MangaResponse = await response.json() as MangaResponse;
@@ -32,15 +30,13 @@ async function getManga() {
 async function getImage() {
   try {
     const response = await fetch(`https://www.alejoseed.com/mangaguesser/image?${Date.now()}`);
-
+    console.log(response);
     if (!response.ok) throw new Error("Can't get image...");
     
     const data: Blob = await response.blob();
 
     const image: string = URL.createObjectURL(data)
 
-    //setMangaImageUrl(image);
-    //setIsLoading(false);
     return image;
 
   } catch (error) {
@@ -65,17 +61,17 @@ export default function Dev(){
 
   const [mangaImageUrl, setMangaImageUrl] = useState("");
 
-  const prepareGame = async () => {
+  async function prepareGame() {
     setIsLoading(true);
-
+    debugger;
     try {
       const mangaResponse = await getManga();
 
       setManga({
-        mangaOne: mangaResponse.mangaNames[0] || "",
-        mangaTwo: mangaResponse.mangaNames[1] || "",
-        mangaThree: mangaResponse.mangaNames[2] || "",
-        mangaFour: mangaResponse.mangaNames[3] || "",
+        mangaOne: mangaResponse.mangas[0] || "",
+        mangaTwo: mangaResponse.mangas[1] || "",
+        mangaThree: mangaResponse.mangas[2] || "",
+        mangaFour: mangaResponse.mangas[3] || "",
       });
       
       const imageResponse = await getImage();
@@ -88,15 +84,14 @@ export default function Dev(){
     }
   };
 
-
   useEffect(() => {
-    void prepareGame()
+    prepareGame()
   }, []);
 
   function handleAnswer(answer: number) {
     fetch(`https://www.alejoseed.com/mangaguesser/answer?number=${answer}`, {
-      method: 'POST',
-      body: JSON.stringify({ answer }),
+      credentials: 'include',
+      method: 'GET',
     })
       .then((response) => response.json())
       .then((data) => {
@@ -106,8 +101,14 @@ export default function Dev(){
           if (score >= streak) {
             setStreak(score);
           }
-          hp + 10 > 100 ? setHp(100) : setHp((prevHp) => prevHp + 10);
-  
+
+          if (hp + 10 > 100) {
+            setHp(100)
+          }
+          else {
+            setHp((prevHp) => prevHp + 10);
+          }
+
           setTimeout(() => {
             setPopUp(false);
             void prepareGame()
