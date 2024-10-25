@@ -4,6 +4,7 @@ import {
 } from "react";
 import React from "react";
 import Head from "next/head"
+import MangaButtons from "../components/mangaButtons";
 
 interface MangaResponse {
   mangas: string[];
@@ -12,7 +13,9 @@ interface MangaResponse {
 
 async function getManga() {
   try {
-    const response = await fetch("https://www.alejoseed.com/mangaguesser/random_manga");
+    const response = await fetch("https://www.alejoseed.com/mangaguesser/random_manga", {
+      credentials: 'include'
+    });
     console.log(response)
     if (!response.ok) throw new Error("Can't get manga...");
     
@@ -29,7 +32,9 @@ async function getManga() {
 
 async function getImage() {
   try {
-    const response = await fetch(`https://www.alejoseed.com/mangaguesser/image?${Date.now()}`);
+    const response = await fetch(`https://www.alejoseed.com/mangaguesser/image?${Date.now()}`, {
+      method: 'GET',
+    });
     console.log(response);
     if (!response.ok) throw new Error("Can't get image...");
     
@@ -45,7 +50,7 @@ async function getImage() {
   }
 }
 
-export default function Dev(){
+export default async function Dev(){
 
   const [isLoading, setIsLoading] = useState(true);
   const [score, setScore] = useState(0);
@@ -63,7 +68,6 @@ export default function Dev(){
 
   async function prepareGame() {
     setIsLoading(true);
-    debugger;
     try {
       const mangaResponse = await getManga();
 
@@ -86,11 +90,10 @@ export default function Dev(){
 
   useEffect(() => {
     prepareGame()
-  }, []);
+  }, [manga, mangaImageUrl]);
 
   function handleAnswer(answer: number) {
     fetch(`https://www.alejoseed.com/mangaguesser/answer?number=${answer}`, {
-      credentials: 'include',
       method: 'GET',
     })
       .then((response) => response.json())
@@ -192,7 +195,8 @@ export default function Dev(){
       
 
       <footer className="absolute grid grid-cols-2 gap-x-2 p-3 w-full inset-x-0 bottom-0">
-          <div className="grid grid-cols-1 gap-y-2">
+          <MangaButtons />
+          {/* <div className="grid grid-cols-1 gap-y-2">
                 <button className="buttonManga w-full" onClick={() => handleAnswer(0)} style={{ backgroundColor: "#89CFF0", 
                 fontSize: manga.mangaOne.length > 41 ? '12px' : 'inherit' }}>
                 {manga.mangaOne}</button>
@@ -212,7 +216,7 @@ export default function Dev(){
                 fontSize: manga.mangaFour.length > 41 ? '12px' : 'inherit'
                 }}>{manga.mangaFour}
               </button>
-            </div>
+            </div> */}
 
       </footer>
     
