@@ -27,14 +27,12 @@ export default function Play(){
     const prepareGame = async () => {
       const mangas : MangasResponse | null = await getMangaNames();
       const image : Blob | null = await getMangaImage();
-      console.log(image);
       if (!mangas || !image) {
         return null;
       }
 
       const imageUrl = URL.createObjectURL(image);      
       setMangas(mangas.mangas);
-      console.log(imageUrl);
       setMangaUrl(imageUrl);
       setIsLoading(!isLoading);
     }
@@ -44,7 +42,6 @@ export default function Play(){
   function handleAnswer(answer: number) {
     const serverAct = async () => {
       const response = await checkAnswer(answer);
-      console.log(response);
 
       if (response === true) {
         setPopUp(true); 

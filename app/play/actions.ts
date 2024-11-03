@@ -26,7 +26,6 @@ export async function getMangaImage() : Promise<Blob | null> {
         const blob = await response.blob();
         return blob
     } catch (error) {
-        console.log(error)
         return null;
     }
 }
