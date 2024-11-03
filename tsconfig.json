@@ -20,7 +20,7 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "Mangaguesser": ["app/types/index.d.ts"]
+      "Mangaguesser": ["./app/types/index.d.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

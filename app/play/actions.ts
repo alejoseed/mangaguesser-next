@@ -26,6 +26,7 @@ export async function getMangaImage() : Promise<Blob | null> {
         const blob = await response.blob();
         return blob
     } catch (error) {
+        console.log(error)
         return null;
     }
 }
@@ -61,7 +62,7 @@ export async function getMangaNames() : Promise<MangasResponse | null> {
         const mangaInfo : MangasResponse = await response.json();
         return mangaInfo;
     } catch (error) {
-        console.error("Failed to fetch manga data.");
+        console.error("Failed to fetch manga data.", error);
         return null;
     }
 }
@@ -76,7 +77,7 @@ export async function checkAnswer(answer : number): Promise<boolean | null> {
             return null;
         }
 
-        const response = await fetch(`https://www.alejoseed.com/mangaguesser/image`, {
+        const response = await fetch(`https://www.alejoseed.com/mangaguesser/answer?number=${answer}`, {
         // const response = await fetch(`http://localhost:8080/answer?number=${answer}`, {
             method: 'GET',
             headers: {

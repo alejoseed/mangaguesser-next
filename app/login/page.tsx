@@ -1,5 +1,5 @@
 import Image from "next/image"
-import construction from "public/underconstruction.jpg"
+import construction from "@/public/underconstruction.jpg"
 
 export default function Login(){
     return(

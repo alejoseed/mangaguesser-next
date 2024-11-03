@@ -12,7 +12,7 @@ export default function NotFound() {
                 
                 <div className="flex flex-col items-center justify-center m-3">
                     <h1>ERROR 404</h1>
-                    <h2>Oh Oh! - Seems like you're lost. Try going back to the home page.</h2>
+                    <h2>Oh Oh! - Seems like you`&apos;`re lost. Try going back to the home page.</h2>
                 </div>
             </div>
         </div>

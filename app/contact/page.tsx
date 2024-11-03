@@ -1,4 +1,3 @@
-import Head from "next/head"
 import Image from "next/image"
 import linkedin from "@/public/linkedinlogo.svg"
 import github from "@/public/githubicon.svg"

@@ -45,7 +45,7 @@ export default function Play(){
     const serverAct = async () => {
       const response = await checkAnswer(answer);
       console.log(response);
-      
+
       if (response === true) {
         setPopUp(true); 
     
