@@ -1,9 +1,10 @@
 import Head from "next/head"
 import Image from "next/image"
-import linkedin from "public/linkedinlogo.svg"
-import github from "public/githubicon.svg"
+import linkedin from "@/public/linkedinlogo.svg"
+import github from "@/public/githubicon.svg"
 import Link from "next/link"
 import { Electrolize } from "next/font/google"
+import { Metadata } from "next"
 
 const electrolize = Electrolize({
     subsets: ['latin'],
@@ -11,23 +12,22 @@ const electrolize = Electrolize({
     weight: "400"
 });
 
+export const metadata: Metadata = {
+    title: 'MangaGuesser - Guess every time',
+    description: `Showcase your manga skills!`,
+    icons: "/logo.svg",
+    openGraph: {
+      title: "MangaGuesser | Contact Page",
+      description: "Try to guess the correct manga!",
+      images: "https://mangaguesser.up.railway.app/mangaguesser-vercel-app-480x800phone.webp",
+      type: "website",
+    }
+  }
+
+  
 export default function Contact(){
     return (
-        <div className={electrolize.className}>
-            <Head>
-                <title>MangaGuesser - Play</title>
-                <meta name="description" content="Showcase your manga skills!" />
-                <link rel="icon" href="/logo.svg" />
-                <link rel="preconnect" href="https://mangaguesser.up.railway.app" />
-
-                <meta property="og:title" content="MangaGuesser | Play Page" />
-                <meta property="og:description" content="Get a bunch of random manga and try to guess the correct one!" />
-                <meta property="og:image" content="https://mangaguesser.up.railway.app/mangaguesser-vercel-app-480x800phone.webp" />
-                <meta property="og:url" content="https://mangaguesser.vercel.app" />
-                <meta property="og:type" content="website" />
-            </Head>
-
-            
+        <div className={electrolize.className}>            
             <div className="text-center flex flex-col justify-center content-center" style={{height: "80svh"}}>
                 
                 <div className="text-center p-8">

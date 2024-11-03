@@ -1,8 +1,7 @@
 import React from "react";
 import Image from "next/image"
 
-// @ts-ignore
-export default function Custom404() {
+export default function NotFound() {
     return (
         <div>
             <div className="flex flex-col" style={{height: "80svh"}}>

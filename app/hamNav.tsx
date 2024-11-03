@@ -1,9 +1,10 @@
+"use client"
 import React from "react";
 import { useState } from "react";
 import Link from "next/link";
 
-
 function HamNavBar() {
+
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
