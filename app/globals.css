@@ -2,11 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-    .hamburgerItems{
-        @apply hover:text-neutral-200 duration-75;
-    }
+@reference "tailwindcss";
 
+@layer base {
     /* html, body, body > div:first-child, #__next, #__next > div:first-child  {
       height: 100%;
       margin: 0;
@@ -64,10 +62,6 @@
       }
       .roll-out {
         animation: 1s rollout;
-    }
-
-    .homeText{
-        @apply flex pt-5 justify-center text-slate-900 font-extrabold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-center italic;
     }
 }
 @layer components{
