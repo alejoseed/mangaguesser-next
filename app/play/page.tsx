@@ -22,6 +22,7 @@ export default function Play(){
   const [mangas, setMangas] = useState<string[]>(["", "", "", ""]);
   const [mangaUrl, setMangaUrl] = useState<string>("");
   const [popUp, setPopUp] = useState<boolean>(false);
+  const [clickedButton, setClickedButton] = useState<number | null>(null);
 
   useEffect(() => {
     const prepareGame = async () => {
@@ -40,6 +41,8 @@ export default function Play(){
   }, [])
 
   function handleAnswer(answer: number) {
+    setClickedButton(answer);
+    
     const serverAct = async () => {
       const response = await checkAnswer(answer);
 
@@ -50,6 +53,11 @@ export default function Play(){
           setPopUp(false);
           location.reload();
         }, 1000);  
+      } else {
+        // Reset clicked state after wrong answer
+        setTimeout(() => {
+          setClickedButton(null);
+        }, 300);
       }
     }
     serverAct();
@@ -68,17 +76,17 @@ export default function Play(){
 
   return ( 
     <div className="grid grid-flow-row grid-rows-[1fr_auto] h-full w-full justify-center">
-
       {popUp && (
-      <div className="font-link flex h-full w-full z-50 absolute opacity-80 bg-black justify-items-center">
-        <dialog open={true}
-          className="self-center text-center bg-cyan-400 rounded-lg w-[300px] h-[200px] flex justify-center items-center"
-        >
-          <div className="text-2xl ">
-            <p>You are correct! +10HP!</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+          <div className="font-link bg-cyan-400 rounded-2xl w-[320px] p-8 shadow-2xl 
+                          animate-[scale-in_0.3s_ease-out] flex flex-col items-center gap-4">
+            <div className="text-4xl">🎉</div>
+            <div className="text-2xl font-bold text-center">
+              <p>You are correct!</p>
+              <p className="text-3xl text-green-700 mt-2">+10HP!</p>
+            </div>
           </div>
-        </dialog>
-      </div>
+        </div>
       )}
 
 
@@ -92,19 +100,66 @@ export default function Play(){
         </div>
       </div>
 
-      <footer className="p-2">
-          <div className="grid gap-x-4 grid-cols-2 items-center pt-3">
-                <div className="grid grid-cols-1 gap-y-2">
-                    <button className="buttonManga w-full" style={getButtonStyle(0, mangas[0] || "")} onClick={() => handleAnswer(0)}>{mangas[0]}</button>
-                    <button className="buttonManga w-full" style={getButtonStyle(1, mangas[1] || "")} onClick={() => handleAnswer(1)}>{mangas[1]}</button>
-                </div>
-                <div className="grid grid-cols-1 gap-y-2">
-                <button className="buttonManga w-full" style={getButtonStyle(2, mangas[2] || "")} onClick={() => handleAnswer(2)}>{mangas[2]}</button>
-                <button className="buttonManga w-full" style={getButtonStyle(3, mangas[3] || "")} onClick={() => handleAnswer(3)}>{mangas[3]}</button>
-                </div>
-            </div>
-      </footer>
-    
+    <footer className="flex gap-2 p-2 w-full"> 
+      <div className="flex flex-col gap-2 flex-1">
+        <button 
+          className={`w-full h-20 rounded-md px-4 text-sm font-semibold 
+                    grid place-items-center text-center 
+                    transition-all duration-100
+                    leading-tight
+                    ${clickedButton === 0 
+                      ? 'scale-95 animate-pulse' 
+                      : 'hover:-translate-y-3 active:scale-95'}`}
+          style={buttonStyles[0]} 
+          onClick={() => handleAnswer(0)}
+          disabled={clickedButton !== null}>
+            {mangas[0]}
+        </button>
+        <button 
+          className={`w-full h-20 rounded-md px-4 text-sm font-semibold 
+                    grid place-items-center text-center 
+                    transition-all duration-100
+                    leading-tight
+                    ${clickedButton === 1 
+                      ? 'scale-95 animate-pulse' 
+                      : 'hover:-translate-y-3 active:scale-95'}`}
+          style={buttonStyles[1]} 
+          onClick={() => handleAnswer(1)}
+          disabled={clickedButton !== null}>
+            {mangas[1]}
+        </button>
+      </div>
+      
+      <div className="flex flex-col gap-2 flex-1">
+        <button 
+          className={`w-full h-20 rounded-md px-4 text-sm font-semibold 
+                    grid place-items-center text-center 
+                    transition-all duration-100
+                    leading-tight
+                    ${clickedButton === 2 
+                      ? 'scale-95 animate-pulse' 
+                      : 'hover:-translate-y-3 active:scale-95'}`}
+          style={buttonStyles[2]}
+          onClick={() => handleAnswer(2)}
+          disabled={clickedButton !== null}>
+            {mangas[2]}
+        </button>
+        <button 
+          className={`w-full h-20 rounded-md px-4 text-sm font-semibold 
+                    grid place-items-center text-center 
+                    transition-all duration-100
+                    leading-tight
+                    ${clickedButton === 3 
+                      ? 'scale-95 animate-pulse' 
+                      : 'hover:-translate-y-3 active:scale-95'}`}
+          style={buttonStyles[3]}
+          onClick={() => handleAnswer(3)}
+          disabled={clickedButton !== null}>
+            {mangas[3]}
+        </button>
+      </div>
+    </footer>
+
     </div>
   );
 }

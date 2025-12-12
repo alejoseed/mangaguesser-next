@@ -22,9 +22,9 @@ export default function Home() {
             <Image src="/narutosasuke.webp" alt="mangaguesser"
             className="rounded-xl shadow-xl max-w-[230px] md:max-w-[360px] pt-6" quality={70} priority={true} width={400} height={400}/>
             <div className='pt-2'>
-                <div className="flex flex-col space-x-4 items-center justify-center roll-out">
+                <button className="flex flex-col space-x-4 items-center justify-center roll-out">
                     <Link href="/play" className="align bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full justify-center">Play Now!</Link>
-                </div>
+                </button>
             </div>
         </div>
       </main>

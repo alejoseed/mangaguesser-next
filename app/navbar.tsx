@@ -1,5 +1,4 @@
 import HamNavBar from "./hamNav";
-import React from 'react'
 import logo from "../public/logo.svg";
 import Link from "next/link";
 import Image from "next/image"
@@ -10,7 +9,7 @@ function NavBarItems() {
       <ul className="flex md:static text-[#3894a3] font-sans text-lg">
         <li>
           <Link href="/"
-            className="mx-4 hover:text-[#EEEEEE] duration-[30ms]"
+            className="mx-4 hover:text-[#EEEEEE] duration-30"
             aria-current="page"
           >
             Home
@@ -19,7 +18,7 @@ function NavBarItems() {
         <li>
           <Link
             href="/play"
-            className="mx-4 hover:text-neutral-200 duration-[30ms]"
+            className="mx-4 hover:text-neutral-200 duration-30"
           >
             Play
           </Link>
@@ -27,7 +26,7 @@ function NavBarItems() {
         <li>
           <Link
             href="/login/login"
-            className="mx-4 hover:text-neutral-200 duration-[30ms]"
+            className="mx-4 hover:text-neutral-200 duration-30"
           >
             Login
           </Link>
@@ -35,7 +34,7 @@ function NavBarItems() {
         <li>
           <Link
             href="/contact"
-            className="mx-4 hover:text-neutral-200 duration-[30ms]"
+            className="mx-4 hover:text-neutral-200 duration-30"
           >
             Contact
           </Link>

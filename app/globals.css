@@ -1,7 +1,9 @@
-@import "tailwindcss/preflight";
-@tailwind utilities;
+@import 'tailwindcss/preflight' layer(utilities);
+@import 'tailwindcss/utilities' layer(utilities);
 
-@reference "tailwindcss";
+@layer utilities {
+  @reference "tailwindcss";
+}
 
 @layer base {
     /* html, body, body > div:first-child, #__next, #__next > div:first-child  {

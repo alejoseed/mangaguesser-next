@@ -24,16 +24,16 @@ function HamNavBar() {
                     pb-[1rem] pl-[3.5rem] pr-[1.5rem]"
                 >
                     <li className="flex flex-col items-end space-y-8 self-end pt-3 text-xl text-[black] ">
-                        <Link href="/" className="duration-[30ms] hover:text-neutral-200" onClick={() => setIsOpen(!isOpen)}>
+                        <Link href="/" className="duration-30 hover:text-neutral-200" onClick={() => setIsOpen(!isOpen)}>
                             Home
                         </Link>
-                        <Link href="/game/Play" className="duration-[30ms] hover:text-neutral-200" onClick={() => setIsOpen(!isOpen)}>
+                        <Link href="/game/Play" className="duration-30 hover:text-neutral-200" onClick={() => setIsOpen(!isOpen)}>
                             Play
                         </Link>
-                        <Link href="/login/login" className="duration-[30ms] hover:text-neutral-200" onClick={() => setIsOpen(!isOpen)}>
+                        <Link href="/login/login" className="duration-30 hover:text-neutral-200" onClick={() => setIsOpen(!isOpen)}>
                             Login
                         </Link>
-                        <Link href="/contact/contactme" className="duration-[30ms] hover:text-neutral-200" onClick={() => setIsOpen(!isOpen)}>
+                        <Link href="/contact/contactme" className="duration-30 hover:text-neutral-200" onClick={() => setIsOpen(!isOpen)}>
                             Contact
                         </Link>
                     </li>

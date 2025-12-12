@@ -37,7 +37,6 @@ export async function getMangaNames() : Promise<MangasResponse | null> {
         const session = cookieStore.get('mysession');
 
         const response = await fetch('https://www.alejoseed.com/mangaguesser/random_manga', {
-        // const response = await fetch('http://localhost:8080/random_manga', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

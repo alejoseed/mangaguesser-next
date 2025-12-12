@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     openGraph: {
       title: "MangaGuesser | Contact Page",
       description: "Try to guess the correct manga!",
-      images: "https://mangaguesser.up.railway.app/mangaguesser-vercel-app-480x800phone.webp",
+      images: "https://www.alejoseed.com/mangaguesser-vercel-app-480x800phone.webp",
       type: "website",
     }
   }
@@ -34,7 +34,7 @@ export default function Contact(){
                 </div>
                 
                 <p>About me:</p>
-                <p>I am a Software Developer currently majoring in Computer Science at the University of Central Florida</p>
+                <p>I am a Software Developer with a Computer Science major from the University of Central Florida</p>
                 <p>I am passionate about sports (it is called football), martial arts, software and cars</p>
                 <p>You can find me on LinkedIn</p>
                 <p>You can also visit my Github, you might find some more interesting stuff in there</p>
