@@ -25,7 +25,7 @@ function NavBarItems() {
         </li>
         <li>
           <Link
-            href="/login/login"
+            href="/login"
             className="mx-4 hover:text-neutral-200 duration-30"
           >
             Login
