@@ -2,33 +2,7 @@
 import { cookies } from 'next/headers'
 import { MangasResponse }  from 'Mangaguesser';
 
-export async function getMangaImage() : Promise<Blob | null> {
-    try {
-        const cookieStore = await cookies();
-        const session = cookieStore.get('mysession') || "";
 
-        if (!session) {
-            console.error("No session found.");
-            return null;
-        }
-
-        const response = await fetch(`https://www.alejoseed.com/mangaguesser/image`, {
-        // const response = await fetch(`http://localhost:8080/image`, {
-        
-            method: 'GET',
-            headers: {
-                'Cookie': `${session.value}`,
-            },
-            redirect: 'follow',
-            credentials: 'include'
-        });
-
-        const blob = await response.blob();
-        return blob
-    } catch (error) {
-        return null;
-    }
-}
 
 
 export async function getMangaNames() : Promise<MangasResponse | null> {

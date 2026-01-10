@@ -1,7 +1,7 @@
 "use client"
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { checkAnswer, getMangaImage, getMangaNames } from "./actions";
+import { checkAnswer, getMangaNames } from "./actions";
 import { MangasResponse } from "Mangaguesser";
 import Image from "next/image";
 
@@ -26,15 +26,13 @@ export default function Play(){
 
   useEffect(() => {
     const prepareGame = async () => {
-      const mangas : MangasResponse | null = await getMangaNames();
-      const image : Blob | null = await getMangaImage();
-      if (!mangas || !image) {
+      const mangaData : MangasResponse | null = await getMangaNames();
+      if (!mangaData) {
         return null;
       }
 
-      const imageUrl = URL.createObjectURL(image);      
-      setMangas(mangas.mangas);
-      setMangaUrl(imageUrl);
+      setMangas(mangaData.mangas);
+      setMangaUrl(mangaData.imageUrl);
       setIsLoading(!isLoading);
     }
     prepareGame();
