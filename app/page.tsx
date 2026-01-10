@@ -18,7 +18,7 @@ export default function Home() {
     <div>
       <main className="">
         <div className='grid justify-items-center roll-out mb-3'>
-            <h2 key={Math.random()} className="flex pt-5 justify-center text-slate-900 font-extrabold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-center italic roll-out">TEST YOUR MANGA SKILLS LIKE NEVER BEFORE</h2>
+            <h2 className="flex pt-5 justify-center text-slate-900 font-extrabold text-4xl sm:text-5xl lg:text-6xl tracking-tight text-center italic roll-out">TEST YOUR MANGA SKILLS LIKE NEVER BEFORE</h2>
             <Image src="/narutosasuke.webp" alt="mangaguesser"
             className="rounded-xl shadow-xl max-w-[230px] md:max-w-[360px] pt-6" quality={70} priority={true} width={400} height={400}/>
             <div className='pt-2'>

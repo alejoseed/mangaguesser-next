@@ -90,7 +90,11 @@ export default function Play(){
 
       <div className="w-svw flex justify-center items-center p-4">
         <div className="relative w-full max-w-[600px] aspect-square">
-          <img className="object-contain" src={mangaUrl} 
+          <Image 
+          className="object-contain" 
+          src={mangaUrl} 
+          width={600}
+          height={600}
           sizes="(max-width: 768px) 90vw, (max-width: 1200px) 70vw, (max-width:1400) 90vw"
           alt="No Manga Found" />
         </div>

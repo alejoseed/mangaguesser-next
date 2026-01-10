@@ -40,6 +40,7 @@ export async function getMangaNames() : Promise<MangasResponse | null> {
 
 export async function checkAnswer(answer : number): Promise<boolean | null> {
     try {
+        debugger;
         const cookieStore = await cookies();
         const session = cookieStore.get('mysession') || "";
 
