@@ -10,7 +10,7 @@ export async function getMangaNames() : Promise<MangasResponse | null> {
         const cookieStore = await cookies();
         const session = cookieStore.get('mysession');
 
-        const response = await fetch('https://www.alejoseed.com/mangaguesser/random_manga', {
+        const response = await fetch('https://node1.alejoseed.com/mangaguesser/random_manga', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -49,7 +49,7 @@ export async function checkAnswer(answer : number): Promise<boolean | null> {
             return null;
         }
 
-        const response = await fetch(`https://www.alejoseed.com/mangaguesser/answer?number=${answer}`, {
+        const response = await fetch(`https://node1.alejoseed.com/mangaguesser/answer?number=${answer}`, {
         // const response = await fetch(`http://localhost:8080/answer?number=${answer}`, {
             method: 'GET',
             headers: {
