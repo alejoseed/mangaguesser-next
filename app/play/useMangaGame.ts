@@ -6,7 +6,7 @@ import { MangasResponse } from 'Mangaguesser';
 export function useMangaGame() {
   const [token, setToken] = useState<string | null>(null);
   const [mangaData, setMangaData] = useState<MangasResponse | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const stored = localStorage.getItem('mangaSession');
     const cookieToken = getCookie();

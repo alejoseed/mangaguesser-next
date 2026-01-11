@@ -75,7 +75,7 @@ export default function Play(){
 
 
       <div className="w-svw flex justify-center items-center p-4">
-        <div className="relative w-full max-w-[600px] md:h-[600px] h-[400px] bg-gray-100 rounded-lg overflow-hidden">
+        <div className="relative w-full max-w-[600px] md:h-[600px] h-[400px] bg-gray-100 rounded-lg overflow-hidden -z-10">
           {mangaData?.imageUrl ? (
             <Image 
               className="object-scale-down"

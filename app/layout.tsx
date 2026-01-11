@@ -5,6 +5,9 @@ import NavBar from "./navbar";
 export const metadata: Metadata = {
   title: 'MangaGuesser - Guess every time',
   description: `Showcase your manga skills!`,
+  icons: {
+    icon: '/logo.svg',
+  },
 };
 
 export default function RootLayout({
