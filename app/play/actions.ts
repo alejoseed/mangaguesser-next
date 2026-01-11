@@ -1,7 +1,7 @@
 'use client'
 import { MangasResponse }  from 'Mangaguesser';
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'https://node1.alejoseed.com';
 
 export async function getMangaNames(): Promise<{data: MangasResponse | null, token: string | null}> {
     try {
