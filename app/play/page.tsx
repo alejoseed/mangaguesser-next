@@ -1,8 +1,7 @@
 "use client"
 import React, { useEffect } from "react";
 import { useState } from "react";
-import { checkAnswer, getMangaNames } from "./actions";
-import { MangasResponse } from "Mangaguesser";
+import { useMangaGame } from "./useMangaGame";
 import Image from "next/image";
 
 const buttonStyles = [
@@ -18,31 +17,19 @@ const getButtonStyle = (index: number, title: string) => ({
 });
 
 export default function Play(){
-  const [isLoading, setIsLoading] = useState(true);
-  const [mangas, setMangas] = useState<string[]>(["", "", "", ""]);
-  const [mangaUrl, setMangaUrl] = useState<string>("");
   const [popUp, setPopUp] = useState<boolean>(false);
   const [clickedButton, setClickedButton] = useState<number | null>(null);
+  const { mangaData, loading, fetchManga, submitAnswer } = useMangaGame();
 
   useEffect(() => {
-    const prepareGame = async () => {
-      const mangaData : MangasResponse | null = await getMangaNames();
-      if (!mangaData) {
-        return null;
-      }
-
-      setMangas(mangaData.mangas);
-      setMangaUrl(mangaData.imageUrl);
-      setIsLoading(!isLoading);
-    }
-    prepareGame();
-  }, [])
+    fetchManga();
+  }, []);
 
   function handleAnswer(answer: number) {
     setClickedButton(answer);
     
     const serverAct = async () => {
-      const response = await checkAnswer(answer);
+      const response = await submitAnswer(answer);
 
       if (response === true) {
         setPopUp(true); 
@@ -52,7 +39,6 @@ export default function Play(){
           location.reload();
         }, 1000);  
       } else {
-        // Reset clicked state after wrong answer
         setTimeout(() => {
           setClickedButton(null);
         }, 300);
@@ -61,7 +47,7 @@ export default function Play(){
     serverAct();
   }
   
-  if (isLoading) {
+  if (loading) {
     return <div>
       <div className="flex flex-col items-center justify-center max-h-full pt-14">
         <video autoPlay loop muted playsInline className="rounded-lg shadow-lg max-w-[360px] md:max-w-lg">
@@ -90,13 +76,19 @@ export default function Play(){
 
       <div className="w-svw flex justify-center items-center p-4">
         <div className="relative w-full max-w-[600px] md:h-[600px] h-[400px] bg-gray-100 rounded-lg overflow-hidden">
-          <Image 
-            className="object-scale-down"
-            src={mangaUrl} 
-            fill
-            sizes="(max-width: 768px) 90vw, (max-width: 1200px) 70vw, (max-width:1400) 90vw"
-            alt="No Manga Found" 
-            priority />
+          {mangaData?.imageUrl ? (
+            <Image 
+              className="object-scale-down"
+              src={mangaData.imageUrl} 
+              fill
+              sizes="(max-width: 768px) 90vw, (max-width: 1200px) 70vw, (max-width:1400) 90vw"
+              alt="Manga image" 
+              priority />
+          ) : (
+            <div className="flex items-center justify-center h-full">
+              <div className="text-gray-500">Loading manga...</div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -113,7 +105,7 @@ export default function Play(){
           style={buttonStyles[0]} 
           onClick={() => handleAnswer(0)}
           disabled={clickedButton !== null}>
-            {mangas[0]}
+            {mangaData?.mangas[0] || ""}
         </button>
         <button 
           className={`w-full h-20 rounded-md px-4 text-sm font-semibold 
@@ -126,7 +118,7 @@ export default function Play(){
           style={buttonStyles[1]} 
           onClick={() => handleAnswer(1)}
           disabled={clickedButton !== null}>
-            {mangas[1]}
+            {mangaData?.mangas[1] || ""}
         </button>
       </div>
       
@@ -142,7 +134,7 @@ export default function Play(){
           style={buttonStyles[2]}
           onClick={() => handleAnswer(2)}
           disabled={clickedButton !== null}>
-            {mangas[2]}
+            {mangaData?.mangas[2] || ""}
         </button>
         <button 
           className={`w-full h-20 rounded-md px-4 text-sm font-semibold 
@@ -155,7 +147,7 @@ export default function Play(){
           style={buttonStyles[3]}
           onClick={() => handleAnswer(3)}
           disabled={clickedButton !== null}>
-            {mangas[3]}
+            {mangaData?.mangas[3] || ""}
         </button>
       </div>
     </footer>

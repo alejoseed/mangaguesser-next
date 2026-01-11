@@ -1,65 +1,48 @@
-'use server'
-import { cookies } from 'next/headers'
+'use client'
 import { MangasResponse }  from 'Mangaguesser';
 
+const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 
-
-
-export async function getMangaNames() : Promise<MangasResponse | null> {
+export async function getMangaNames(): Promise<{data: MangasResponse | null, token: string | null}> {
     try {
-        const cookieStore = await cookies();
-        const session = cookieStore.get('mysession');
-
-        const response = await fetch('https://node1.alejoseed.com/random_manga', {
-        // const response = await fetch('http://localhost:8080/random_manga', {
+        const response = await fetch(`${API_BASE}/random_manga`, {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Cookie': session ? `mysession=${session.value}` : ''
-            },
-            credentials: 'include'
+            credentials: 'include',
         });
 
-        if (!session) {
-            const cookiesArray = response.headers.getSetCookie();
-            if (cookiesArray.length < 1) {
-                console.error("No cookie found in request response.");
-                return null;
-            }
-            
-            cookieStore.set('mysession', cookiesArray[0]);
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error(`API request failed: ${response.status} ${response.statusText}`, errorText);
+            return {data: null, token: null};
         }
 
-        const mangaInfo : MangasResponse = await response.json();
-        return mangaInfo;
+        const result = await response.json();
+        return {
+            data: result.data,
+            token: result.token || null
+        };
     } catch (error) {
         console.error("Failed to fetch manga data.", error);
-        return null;
+        return {data: null, token: null};
     }
 }
 
-export async function checkAnswer(answer : number): Promise<boolean | null> {
+export async function checkAnswer(answer: number, sessionToken: string): Promise<boolean | null> {
     try {
-        const cookieStore = await cookies();
-        const session = cookieStore.get('mysession') || "";
+        const response = await fetch(`${API_BASE}/answer?number=${answer}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${sessionToken}`
+            },
+        });
 
-        if (!session) {
-            console.error("No session found.");
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error(`Answer API request failed: ${response.status} ${response.statusText}`, errorText);
             return null;
         }
 
-        const response = await fetch(`https://node1.alejoseed.com/answer?number=${answer}`, {
-        // const response = await fetch(`http://localhost:8080/answer?number=${answer}`, {
-            method: 'GET',
-            headers: {
-                'Cookie': `mysession=${session.value}`,
-            },
-            redirect: 'follow',
-            credentials: 'include'
-        });
-
         const result = await response.json();
-        
         return result["correct"];
     } catch (error) {
         console.error(error);
