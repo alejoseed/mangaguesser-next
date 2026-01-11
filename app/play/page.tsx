@@ -89,14 +89,14 @@ export default function Play(){
 
 
       <div className="w-svw flex justify-center items-center p-4">
-        <div className="relative w-full max-w-[600px] aspect-square">
+        <div className="relative w-full max-w-[600px] md:h-[600px] h-[400px] bg-gray-100 rounded-lg overflow-hidden">
           <Image 
-          className="object-contain" 
-          src={mangaUrl} 
-          width={600}
-          height={600}
-          sizes="(max-width: 768px) 90vw, (max-width: 1200px) 70vw, (max-width:1400) 90vw"
-          alt="No Manga Found" />
+            className="object-scale-down"
+            src={mangaUrl} 
+            fill
+            sizes="(max-width: 768px) 90vw, (max-width: 1200px) 70vw, (max-width:1400) 90vw"
+            alt="No Manga Found" 
+            priority />
         </div>
       </div>
 

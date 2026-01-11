@@ -11,16 +11,16 @@ export async function getMangaNames() : Promise<MangasResponse | null> {
         const session = cookieStore.get('mysession');
 
         const response = await fetch('https://node1.alejoseed.com/random_manga', {
+        // const response = await fetch('http://localhost:8080/random_manga', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Cookie': `${session?.value}`
+                'Cookie': session ? `mysession=${session.value}` : ''
             },
             credentials: 'include'
         });
 
         if (!session) {
-            // Set cookies
             const cookiesArray = response.headers.getSetCookie();
             if (cookiesArray.length < 1) {
                 console.error("No cookie found in request response.");
@@ -40,7 +40,6 @@ export async function getMangaNames() : Promise<MangasResponse | null> {
 
 export async function checkAnswer(answer : number): Promise<boolean | null> {
     try {
-        debugger;
         const cookieStore = await cookies();
         const session = cookieStore.get('mysession') || "";
 
@@ -53,7 +52,7 @@ export async function checkAnswer(answer : number): Promise<boolean | null> {
         // const response = await fetch(`http://localhost:8080/answer?number=${answer}`, {
             method: 'GET',
             headers: {
-                'Cookie': `${session.value}`,
+                'Cookie': `mysession=${session.value}`,
             },
             redirect: 'follow',
             credentials: 'include'
