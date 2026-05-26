@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getMangaNames, checkAnswer } from './actions';
 import { MangasResponse } from 'Mangaguesser';
 
@@ -7,17 +7,6 @@ export function useMangaGame() {
   const [token, setToken] = useState<string | null>(null);
   const [mangaData, setMangaData] = useState<MangasResponse | null>(null);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const stored = localStorage.getItem('mangaSession');
-    const cookieToken = getCookie();
-
-    if (stored) {
-      setToken(stored);
-    } else if (cookieToken) {
-      setToken(cookieToken);
-      localStorage.setItem('mangaSession', cookieToken);
-    }
-  }, []);
 
   const getCookie = () => {
     const token = document.cookie
@@ -33,7 +22,20 @@ export function useMangaGame() {
     return token;
   };
 
-  const fetchManga = async () => {
+  useEffect(() => {
+    const stored = localStorage.getItem('mangaSession');
+    const cookieToken = getCookie();
+
+    if (stored) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setToken(stored);
+    } else if (cookieToken) {
+      setToken(cookieToken);
+      localStorage.setItem('mangaSession', cookieToken);
+    }
+  }, []);
+
+  const fetchManga = useCallback(async () => {
     setLoading(true);
     try {
       const result = await getMangaNames();
@@ -46,7 +48,7 @@ export function useMangaGame() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const submitAnswer = async (answer: number) => {
     if (!token) return null;

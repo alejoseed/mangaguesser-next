@@ -11,11 +11,6 @@ const buttonStyles = [
   { backgroundColor: "#009e60" }  // Green
 ];
 
-const getButtonStyle = (index: number, title: string) => ({
-  ...buttonStyles[index],
-  fontSize: title.length > 41 ? '12px' : 'inherit'
-});
-
 export default function Play(){
   const [popUp, setPopUp] = useState<boolean>(false);
   const [clickedButton, setClickedButton] = useState<number | null>(null);
@@ -23,7 +18,7 @@ export default function Play(){
 
   useEffect(() => {
     fetchManga();
-  }, []);
+  }, [fetchManga]);
 
   function handleAnswer(answer: number) {
     setClickedButton(answer);

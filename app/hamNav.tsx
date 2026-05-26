@@ -30,9 +30,9 @@ function HamNavBar() {
                         <Link href="/play" className="duration-30 hover:text-neutral-200" onClick={() => setIsOpen(!isOpen)}>
                             Play
                         </Link>
-                        <Link href="/login" className="duration-30 hover:text-neutral-200" onClick={() => setIsOpen(!isOpen)}>
+                        {/* <Link href="/login" className="duration-30 hover:text-neutral-200" onClick={() => setIsOpen(!isOpen)}>
                             Login
-                        </Link>
+                        </Link> */}
                         <Link href="/contact" className="duration-30 hover:text-neutral-200" onClick={() => setIsOpen(!isOpen)}>
                             Contact
                         </Link>

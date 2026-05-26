@@ -23,14 +23,14 @@ function NavBarItems() {
             Play
           </Link>
         </li>
-        <li>
+        {/* <li>
           <Link
             href="/login"
             className="mx-4 hover:text-neutral-200 duration-30"
           >
             Login
           </Link>
-        </li>
+        </li> */}
         <li>
           <Link
             href="/contact"
