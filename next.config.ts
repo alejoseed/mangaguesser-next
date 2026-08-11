@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'node1.alejoseed.com',
         port: '',
-        pathname: '/mangas/**',
+        pathname: '/panels/**',
       },
     ],
   },

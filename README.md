@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# mangaguesser-next
 
-## Getting Started
+Mangaguesser is a game that shows you a manga panel, you gotta pick from 4 different series and try to guess which one is correct.
 
-First, run the development server:
+I came up with this idea one day after playing a lot of *dle games. The main issue
+was finding images to use. I ended up having to scrape the images and serve them from my backend. 
+Cloudflare makes it really easy to cache them with their CDN, so they are really quick to serve anywhere.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+I also really wanted to use Next.js so I decided for it instead of just traditional React + Vite.
+
+**Live at:** [mangaguesser.alejoseed.com](https://mangaguesser.alejoseed.com)
+
+<p align="center">
+  <img src="docs/desktop-play.png" alt="A round in progress on desktop" width="600" align="top">
+  <img src="docs/mobile-play.png" alt="A round in progress on mobile" width="175" align="top">
+</p>
+
+This repo is the frontend only (with some Next.js goodies for handling cookies). 
+The API is a separate service
+[https://github.com/alejoseed/Mangaguesser-Gobackend](https://github.com/alejoseed/Mangaguesser-Gobackend), currently serving from
+`node1.alejoseed.com`.
+
+## Stack
+
+- Next.js 16 with the App Router, React 19, TypeScript
+- Tailwind CSS 4 via PostCSS
+- Geist, self-hosted through `next/font` from `app/fonts/`
+- `next/image`, with `next.config.ts` allowlisting `node1.alejoseed.com/mangas/**`
+
+## Running it locally
+
+```sh
+npm install
+npm run dev      # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Command         | What it does                       |
+| :-------------- | :--------------------------------- |
+| `npm run dev`   | Dev server                         |
+| `npm run build` | Production build                   |
+| `npm run start` | Serve the production build         |
+| `npm run lint`  | ESLint                             |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+`API_BASE` falls back to `https://node1.alejoseed.com`, so the game works
+against production without any env setup. To point it at a local backend:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```sh
+NEXT_PUBLIC_API_URL=http://localhost:8080 npm run dev
+```
 
-## Learn More
+## How a round works
 
-To learn more about Next.js, take a look at the following resources:
+Two endpoints, both in [`app/play/actions.ts`](app/play/actions.ts):
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+|         Request          |                        Returns                           |
+| :----------------------- | :------------------------------------------------------- |
+| `GET /random_manga`      | `{ mangas[], imageUrl }` plus a session token            |
+| `GET /answer?number=<n>` | `{ correct: boolean }`, authorized with `Bearer <token>` |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The session token arrives either in the response body or in a
+`mangaguesser_token` cookie, and gets mirrored into `localStorage` under
+`mangaSession` so a refresh doesn't start a new session. The session is also stored in my database.
+[`useMangaGame.ts`](app/play/useMangaGame.ts) owns that state along with the
+current panel and loading flag. A correct guess renders
+[`CorrectPopUp.tsx`](app/play/CorrectPopUp.tsx).
 
-## Deploy on Vercel
+Guesses are checked server side: the client posts an index and the backend
+answers `correct` or not, so the scoring logic isn't in the browser.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Layout
+
+```text
+app/
+├── page.tsx          # landing page
+├── layout.tsx        # root layout, metadata, fonts
+├── navbar.tsx
+├── hamNav.tsx        # mobile nav
+├── not-found.tsx
+├── globals.css
+├── contact/page.tsx
+├── login/page.tsx
+├── play/
+│   ├── page.tsx          # the game screen
+│   ├── useMangaGame.ts   # session + round state
+│   ├── actions.ts        # API calls
+│   ├── mangaButtons.tsx  # answer buttons
+│   └── CorrectPopUp.tsx
+├── types/index.d.ts  # MangasResponse
+└── fonts/            # Geist woff files
+```
+
+## Deploying
+
+I am using Vercel for the frontend. The backend is deployed on a VPS so deploying is as easy 
+as having Nginx or simply just exposing the app through the port you want.
