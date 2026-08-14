@@ -62,7 +62,6 @@ export default function Play(){
             <div className="text-4xl">🎉</div>
             <div className="text-2xl font-bold text-center">
               <p>You are correct!</p>
-              <p className="text-3xl text-green-700 mt-2">+10HP!</p>
             </div>
           </div>
         </div>
